@@ -4,9 +4,26 @@ import transport.driver.DriverB;
 import transport.driver.DriverC;
 import transport.driver.DriverD;
 
-import java.util.List;
+import java.util.*;
 
 public class Main {
+
+    private static final List<String> NAMES = List.of(
+            "Брюс Уэйн",
+            "Фрол Игнашевич",
+            "Человек Паук",
+            "Севостьян Смутьянович",
+            "Железный челове",
+            "Лариса Тамада",
+            "Атон Патрон",
+            "Сергей Эгегей",
+            "Дмитрий Лисовский-Волосовский",
+            "Крокадил Гена"
+    );
+
+    private static final Random RANDOM = new Random();
+    private static final int MAX_SIZE = 4;
+
     public static void main(String[] args) {
 
 
@@ -18,8 +35,8 @@ public class Main {
         //}
 
 
-        // Задание 1,2,3,4
-        System.out.println("Задание 1,2,3,4");
+        // Задание 1,2
+        System.out.println("Задание 1,2");
 
         Mechanic<Car> djuzeppe = new Mechanic<>("Джузеппе ", "Сильвестров", " ChupaCups");
         Sponsor cocaCola = new Sponsor("CocaCola", 200_000);
@@ -122,6 +139,31 @@ public class Main {
         ///evpatiy.stopMove(ikarus);
         ///evpatiy.refill(ikarus);
         ///evpatiy.printInfo(ikarus);
+        //Задание 3
+        System.out.println("Задание 3");
+
+        Queue<String> queue1 = new ArrayDeque<>();
+        Queue<String> queue2 = new ArrayDeque<>();
+        randomFilling(queue1);
+        randomFilling(queue2);
+        System.out.println("Первая очередь: " + queue1);
+        System.out.println("Вторая очередь: " + queue2);
+        System.out.println();
+
+        add("Педро Паскулле", queue1, queue2);
+        System.out.println("Первая очередь: " + queue1);
+        System.out.println("Вторая очередь: " + queue2);
+        System.out.println();
+
+        remove(queue1, queue2);
+        System.out.println("Первая очередь: " + queue1);
+        System.out.println("Вторая очередь: " + queue2);
+        System.out.println();
+
+        // Задание 4
+        System.out.println("Задание 4");
+        example();
+        example1();
     }
 
     private static void printInfo(Transport transport) {
@@ -146,6 +188,77 @@ public class Main {
             }
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private static void example() {
+        List<List<String>> biDemArrList = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            biDemArrList.add(i, new ArrayList<>());
+            for (int j = 0; j < 8; j++) {
+                biDemArrList.get(i).add(j, ((i+j) % 2 == 1 ? "●" : "◯"));
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                System.out.print(biDemArrList.get(i).get(j) + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private static void example1() {
+        List<List<Integer>> biDemArrList = new ArrayList<>();
+
+        for (int i = 0; i < 8; i++) {
+            biDemArrList.add(i, new ArrayList<>());
+            for (int j = 0; j < 8; j++) {
+                if (i % 2 == 0 && j % 2 == 0) {
+                    biDemArrList.get(i).add(j, 1);
+                } else if (i % 2 != 0 && j % 2 != 0) {
+                    biDemArrList.get(i).add(j, 1);
+                } else {
+                    biDemArrList.get(i).add(j, 0);
+                }
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            System.out.print("\n");
+            for (int j = 0; j < 8; j++) {
+                System.out.print(biDemArrList.get(i).get(j) + " ");
+            }
+        }
+    }
+
+    private static void add(String name,
+                            Queue<String> queue1,
+                            Queue<String> queue2) {
+
+        if (queue1.size() == MAX_SIZE && queue2.size() == MAX_SIZE) {
+            System.out.println("Нужно крикнуть Галю! ");
+            return;
+        }
+
+        if (queue1.size() < queue2.size()) {
+            queue1.offer(name);
+        } else {
+            queue2.offer(name);
+        }
+    }
+
+    private static void remove(Queue<String> queue1,
+                               Queue<String> queue2) {
+        if (RANDOM.nextBoolean()) {
+            queue1.poll();
+        } else {
+            queue2.poll();
+        }
+    }
+
+    private static void randomFilling(Queue<String> queue) {
+        int size = RANDOM.nextInt(MAX_SIZE + 1);
+        for (int i = 0; i < size; i++) {
+            queue.offer(NAMES.get(RANDOM.nextInt(NAMES.size())));
         }
     }
 
